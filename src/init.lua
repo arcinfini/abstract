@@ -8,19 +8,23 @@ end
 	class. This table will eventually become the object's metatable and is
 	shared between all objects of this class.
 
-	This table inherits from its parent's __object table through clone
+	This table 'inherits' from its parent's __object table
 
-	TODO: __super
+	The index __extindex allows for the inheritance of the '__index' metamethod.
+	It is also checked after the base indexing of the object to prevent
+	unexpected overrides caused if __extindex always returns a non-nil value
 ]]
 local function __object(inherits, name)
-	local object = table.clone(inherits.__object or {})
+	local object = {}
+	object.__inherits = (inherits or {}).__object or {}
 	object.__index = function(obj, index)
-		-- prioritize extindex or object[index]?
-		local value = object[index]
-		if value == nil and object.__extindex then
+		local value = object[index] or object.__inherits[index]
+		if value ~= nil then return value end
+
+		if object.__extindex then
 			value = object.__extindex(obj, index)
+			if value ~= nil then return value end
 		end
-		return value
 	end
 	object.__name = name
 
