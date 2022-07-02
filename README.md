@@ -35,18 +35,12 @@ anObject:DoWork() --> "working: 5"
 
 </br>
 
-Naming conventions you will see me follow in classes that extend from Object:
+Naming conventions that should be used to avoid collisions with internal metamethods:
 
 Classes will follow the CamelCase naming scheme.
 
-Indices that begin with two underscores and a lowercase letter are meant to be
-reserved for meta-values. These should not be created by default and should only
-be overridden in the case of metamethods.
+Indices that begin with two underscores and a lowercase letter are meant to be reserved for meta-values. These should not be created by default and should only be overridden in the case of intentional metamethods.
 
-Common metamethods are the default Lua metamethods, __new, __init, __super,
-__object, __static. The only ones that are intended to be overridden are __new and __init along with the default luau metamethods.
+Common metamethods are: the default Lua metamethods, __new, __init, __super, __object, and __static. The only ones that are intended to be overridden are __new and __init along with the default luau metamethods.
 
-Indices that begin with two underscores and an upper case letter are meant to be
-private/protected members. These (at least currently) are not protected outside
-through the library (as its not entirely critical); they are only meant
-to be suggestions.
+Indices that begin with two underscores and an upper case letter are meant to be private/protected members. These (at least currently) are not protected outside through the library (as its not entirely critical); they are only meant to be suggestions though there is no guaruntee this will not change in the future.
