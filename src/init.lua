@@ -22,7 +22,9 @@ local function __object(inherits, name)
 		if value ~= nil then return value end
 
 		if object.__extindex then
-			value = object.__extindex(obj, index)
+			value = if typeof(object.__extindex) == "function" then
+				object.__extindex(obj, index) else object.__extindex[index]
+
 			if value ~= nil then return value end
 		end
 	end
@@ -60,16 +62,13 @@ local function __abstractmeta(parent, name)
 	abstractmeta = {
 
 		--[[
-			Controls the assignment of new indexes to the __object 
-			metastructure. only allows the assignment of functions (methods).
+			Controls the assignment of new indexes to the __object
+			metastructure.
 
 			Prevents the developer from overriding the __index metamethod.
 			Prevents assignments on the abstract
 		]]
 		__newindex = function(cls, index, value)
-			if typeof(value) ~= "function" then
-				error("can not define a non-function value", 2)
-			end
 
 			-- Prevent developer from overriding __index
 			index = if index == "__index" then "__extindex" else index
